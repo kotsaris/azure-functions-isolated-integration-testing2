@@ -2,6 +2,8 @@ using FunctionApp.IsolatedDemo.Api;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
+using FunctionApp.IsolatedDemo.Api.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var host = new HostBuilder()
     .ConfigureFunctionsWebApplication()
@@ -15,6 +17,7 @@ var host = new HostBuilder()
 
         services.AddApplication(configuration);
         services.AddInfrastructure(configuration);
+        services.AddSingleton<ICauseProblemsWhenLive, RealProblemCauser>();
     })
     .Build();
 
@@ -24,3 +27,12 @@ await host.RunAsync();
 /// For the integration Tests Project
 /// </summary>
 public partial class Program { }
+
+public class RealProblemCauser : ICauseProblemsWhenLive
+{
+    public void CauseProblems()
+    {
+        Console.WriteLine("I am causing problems!");
+        throw new Exception("I am causing problems!");
+    }
+} 

@@ -1,0 +1,11 @@
+﻿{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated"
+  },
+  "NotificationApiUrl": "https://63cacb2d4f53a004202b1df7.mockapi.io/api/v1/",
+  "ConnectionStrings": {
+    "Database": "Server=localhost;Port=5432;Database=notesdb;User ID=postgres;Password=postgres;"
+  }
+}

@@ -15,17 +15,20 @@ namespace FunctionApp.IsolatedDemo.Api.Services
         private readonly IDateTimeProvider _dateTimeProvider;
         private readonly INotificationService _notificationService;
         private readonly ILogger<NoteService> _logger;
-
+        private readonly ICauseProblemsWhenLive _problemCauser;
+        
         public NoteService(
             INoteRepository noteRepository, 
             IDateTimeProvider dateTimeProvider,
             INotificationService notificationService,
-            ILogger<NoteService> logger)
+            ILogger<NoteService> logger,
+            ICauseProblemsWhenLive problemCauser)
         {
             _noteRepository = noteRepository;
             _dateTimeProvider = dateTimeProvider;
             _notificationService = notificationService;
             _logger = logger;
+            _problemCauser = problemCauser;
         }
 
         public async Task<NoteDto> CreateNoteAsync(CreateNoteOptions createNoteOptions, CancellationToken ct = default)
@@ -37,6 +40,8 @@ namespace FunctionApp.IsolatedDemo.Api.Services
                 return null;
             }
 
+            _problemCauser.CauseProblems();
+            
             var newNote = await _noteRepository.CreateAsync(new Note
             {
                 Id = Guid.NewGuid(),
@@ -56,5 +61,10 @@ namespace FunctionApp.IsolatedDemo.Api.Services
                 Body = newNote.Body
             };
         }
+    }
+
+    public interface ICauseProblemsWhenLive
+    {
+        void CauseProblems();
     }
 }

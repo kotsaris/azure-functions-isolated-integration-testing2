@@ -32,7 +32,9 @@ namespace FunctionApp.IsolatedDemo.Api.Tests.Integration
 
                         services.AddApplication(configuration);
                         services.AddInfrastructure(configuration);
-
+                        
+                        //services.AddSingleton<ICauseProblemsWhenLive, ProblemSolver>();
+                        services.AddSingleton<ICauseProblemsWhenLive, RealProblemCauser>();
                         services.RemoveAll(typeof(IHostedService));
 
                         services.RemoveAll(typeof(IDbConnectionFactory));
@@ -54,5 +56,13 @@ namespace FunctionApp.IsolatedDemo.Api.Tests.Integration
                         services.AddTransient<NotesFunction>();
                     });
         }
+    }
+}
+
+public class ProblemSolver : ICauseProblemsWhenLive
+{
+    public void CauseProblems()
+    {
+        Console.WriteLine("I am solving problems!");
     }
 }
